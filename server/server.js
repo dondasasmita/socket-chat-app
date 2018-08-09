@@ -18,10 +18,22 @@ const io = socketIO(server);
 // Configured middleware
 app.use(express.static(publicPath));
 
-// Registered event listener for a new connection
+// Registered event listener
 io.on("connection", socket => {
   console.log("New user connected");
 
+  socket.emit("newMessage", {
+    from: "donda@gmail.com",
+    text: "hello message",
+    createdAt: 123
+  });
+
+  // Listen for sendMessage event
+  socket.on("sendMessage", newMessage => {
+    console.log("sendMessage", newMessage);
+  });
+
+  // Listen for disconnect event
   socket.on("disconnect", () => {
     console.log("User was disconnected");
   });

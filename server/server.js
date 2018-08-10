@@ -22,11 +22,31 @@ app.use(express.static(publicPath));
 io.on("connection", socket => {
   console.log("New user connected");
 
+  // Welcome message
+  socket.emit("welcome", {
+    from: "Admin",
+    text: "Welcome to the chat app",
+    createdAt: new Date().getTime()
+  });
+
+  // Prompt other users that a new user has joined
+  socket.broadcast.emit("newUser", {
+    from: "Admin",
+    text: "New user joined",
+    createdAt: new Date().getTime()
+  });
+
   // Listen for sendMessage event
   socket.on("sendMessage", message => {
     console.log("sendMessage", message);
+
     // Fire sendMessage event to client
-    io.emit("newMessage", {
+    // io.emit("newMessage", {
+    //   from: message.from,
+    //   text: message.text,
+    //   createdAt: new Date().getTime()
+    // });
+    socket.broadcast.emit("newMessage", {
       from: message.from,
       text: message.text,
       createdAt: new Date().getTime()

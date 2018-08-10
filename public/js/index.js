@@ -10,6 +10,15 @@ socket.on("disconnect", function() {
 });
 
 // Custom listen for newMessage event from server
-socket.on("newMessage", function(data) {
-  console.log("newMessage", data);
+socket.on("newMessage", function(message) {
+  console.log("newMessage", message);
+});
+
+// Listen to admin messages
+socket.on("welcome", function(message) {
+  console.log("welcome", message.text);
+});
+
+socket.on("newUser", function(message) {
+  console.log("newUser", message.text);
 });

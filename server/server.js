@@ -22,15 +22,15 @@ app.use(express.static(publicPath));
 io.on("connection", socket => {
   console.log("New user connected");
 
-  socket.emit("newMessage", {
-    from: "donda@gmail.com",
-    text: "hello message",
-    createdAt: 123
-  });
-
   // Listen for sendMessage event
-  socket.on("sendMessage", newMessage => {
-    console.log("sendMessage", newMessage);
+  socket.on("sendMessage", message => {
+    console.log("sendMessage", message);
+    // Fire sendMessage event to client
+    io.emit("newMessage", {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    });
   });
 
   // Listen for disconnect event

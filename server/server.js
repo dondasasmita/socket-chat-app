@@ -24,20 +24,24 @@ io.on("connection", socket => {
   console.log("New user connected");
 
   // Welcome message
-  socket.emit("welcome", generateMessage("Admin", "Welcome to the chat app"));
+  socket.emit(
+    "newMessage",
+    generateMessage("Admin", "Welcome to the chat app")
+  );
 
   // Prompt other users that a new user has joined
-  socket.broadcast.emit("newUser", generateMessage("Admin", "New user joined"));
+  socket.broadcast.emit(
+    "newMessage",
+    generateMessage("Admin", "New user joined")
+  );
 
   // Listen for sendMessage event
-  socket.on("sendMessage", message => {
+  socket.on("sendMessage", (message, callback) => {
     console.log("sendMessage", message);
 
-    // Fire sendMessage event to client except the sender itself
-    socket.broadcast.emit(
-      "newMessage",
-      generateMessage(message.from, message.text)
-    );
+    // Fire sendMessage event to client
+    io.emit("newMessage", generateMessage(message.from, message.text));
+    callback("This is from the server.");
   });
 
   // Listen for disconnect event

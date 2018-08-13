@@ -12,13 +12,21 @@ socket.on("disconnect", function() {
 // Custom listen for newMessage event from server
 socket.on("newMessage", function(message) {
   console.log("newMessage", message);
+  let li = jQuery("<li></li>");
+  li.text(`${message.from}: ${message.text}`);
+  jQuery("#messages").append(li);
 });
 
-// Listen to admin messages
-socket.on("welcome", function(message) {
-  console.log("welcome", message.text);
-});
-
-socket.on("newUser", function(message) {
-  console.log("newUser", message.text);
+// On submit
+jQuery("#message-form").on("submit", function(e) {
+  //Override the default behavior upon clicking the submit button
+  e.preventDefault();
+  socket.emit(
+    "sendMessage",
+    {
+      from: "User",
+      text: jQuery("[name=message]").val()
+    },
+    function() {}
+  );
 });

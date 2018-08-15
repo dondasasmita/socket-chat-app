@@ -38,9 +38,14 @@ locationButton.on("click", () => {
     return alert("Location is not supported by browser");
   } else {
     navigator.geolocation.getCurrentPosition(
+      // Callback upon success
       position => {
-        console.log(position);
+        socket.emit("shareLocation", {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        });
       },
+      // Error callback
       () => {
         alert("Unable to get location");
       }

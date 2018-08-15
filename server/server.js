@@ -3,6 +3,7 @@ const express = require("express");
 const socketIO = require("socket.io");
 const http = require("http");
 const { generateMessage } = require("./utilities/message");
+const { getLocation } = require("./utilities/geolocation");
 
 // Path to public directory
 const publicPath = path.join(__dirname, "../public");
@@ -42,6 +43,18 @@ io.on("connection", socket => {
     // Fire sendMessage event to client
     io.emit("newMessage", generateMessage(message.from, message.text));
     callback("This is from the server.");
+  });
+
+  // Listen for shareLocation
+  socket.on("shareLocation", coords => {
+    // Fire showLocation event to client
+    io.emit(
+      "newMessage",
+      generateMessage(
+        "Admin",
+        `latitude : ${coords.latitude} longitude : ${coords.longitude}`
+      )
+    );
   });
 
   // Listen for disconnect event

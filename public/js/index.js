@@ -17,6 +17,18 @@ socket.on("newMessage", function(message) {
   jQuery("#messages").append(li);
 });
 
+// Custom listen for newLocationMessage event from server
+socket.on("newLocationMessage", function(message) {
+  console.log("newLocationMessage", message);
+  let li = jQuery("<li></li>");
+  // put url as attribute and open in a new tab
+  let a = jQuery("<a target=blank>My location</a>");
+  li.text(`${message.from}: `);
+  a.attr("href", message.url);
+  li.append(a);
+  jQuery("#messages").append(li);
+});
+
 // On submit
 jQuery("#message-form").on("submit", function(e) {
   //Override the default behavior upon clicking the submit button

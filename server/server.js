@@ -42,7 +42,7 @@ io.on("connection", socket => {
 
     // Fire sendMessage event to client
     io.emit("newMessage", generateMessage(message.from, message.text));
-    callback("This is from the server.");
+    callback();
   });
 
   // Listen for shareLocation

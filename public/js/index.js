@@ -33,13 +33,19 @@ socket.on("newLocationMessage", function(message) {
 jQuery("#message-form").on("submit", function(e) {
   //Override the default behavior upon clicking the submit button
   e.preventDefault();
+  // Variable to store the message box
+  let messageBox = jQuery("[name=message]");
   socket.emit(
     "sendMessage",
     {
       from: "User",
-      text: jQuery("[name=message]").val()
+      text: messageBox.val()
     },
-    function() {}
+    // call back function upon successful message submission
+    function() {
+      // clear the form by giving the value an empty string
+      messageBox.val("");
+    }
   );
 });
 
